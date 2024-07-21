@@ -7,8 +7,7 @@ def clean_price(item):
 
 
 def clean_link(item):
-    d_name = 'https://shop.foodbazaar.com'
-    return f'{d_name}{item[0]}'
+    return f'https://shop.foodbazaar.com{item[0]}'
 
 
 class FoodbazaarItem(scrapy.Item):  # noqa

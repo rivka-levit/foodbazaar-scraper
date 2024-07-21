@@ -38,7 +38,7 @@ class FoodSpider(scrapy.Spider):
 
         containers = r.xpath('//div[@class="e-13udsys"]')
 
-        for container in containers:
+        for container in containers[1:]:
             item = ItemLoader(
                 item=FoodbazaarItem(),
                 response=r,
