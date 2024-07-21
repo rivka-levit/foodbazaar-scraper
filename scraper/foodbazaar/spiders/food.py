@@ -41,17 +41,18 @@ class FoodSpider(scrapy.Spider):
         for container in containers:
             item = ItemLoader(
                 item=FoodbazaarItem(),
+                response=r,
                 selector=container
             )
 
-            item.add_xpath('name', '//h2/text()')
+            item.add_xpath('name', './/h2/text()')
             item.add_xpath(
                 'price',
-                '//div[@class="e-1s49gp4"]/span[1]/text()'
+                './/div[@class="e-1s49gp4"]/span[1]/text()'
             )
             item.add_xpath(
                 'link',
-                '//a[@class="e-1dlf43s"]/@href'
+                './/a[@class="e-1dlf43s"]/@href'
             )
 
             yield item.load_item()
