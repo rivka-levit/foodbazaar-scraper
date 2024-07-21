@@ -9,6 +9,7 @@ from foodbazaar.items import FoodbazaarItem
 
 from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 
 import time
 
@@ -33,6 +34,19 @@ class FoodSpider(scrapy.Spider):
         btn_zip = driver.find_element(By.CLASS_NAME, 'e-okf0s9')
         btn_zip.click()
         time.sleep(2)
+
+        i = 1
+        num_scrolls = 2
+        last_height = driver.execute_script("return document.body.scrollHeight")
+
+        while True and i <= num_scrolls:
+            i += 1
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(3)
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
 
         r = Selector(text=driver.page_source)
 
