@@ -48,7 +48,7 @@ class FoodSpider(CrawlSpider):
         )
         departments = [x.get_attribute('href') for x in a_elements]
 
-        for dp in departments:
+        for dp in departments[:1]:
             driver.get(dp)
             category_elements = driver.find_elements(
                 By.XPATH,
@@ -56,7 +56,7 @@ class FoodSpider(CrawlSpider):
             )
             links = [x.get_attribute('href') for x in category_elements]
 
-            for link in links:
+            for link in links[:1]:
                 driver.get(link)
                 time.sleep(2)
 

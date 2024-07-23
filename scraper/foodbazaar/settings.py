@@ -61,9 +61,10 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "foodbazaar.pipelines.FoodbazaarPipeline": 300,
-# }
+ITEM_PIPELINES = {
+   "foodbazaar.pipelines.AddToXlsxPipeline": 200,
+   "foodbazaar.pipelines.RemoveDuplicatesPipeline": 100,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
