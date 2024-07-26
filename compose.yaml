@@ -5,11 +5,16 @@ services:
       dockerfile: scraper/Dockerfile
     volumes:
       - ./scraper:/scraper
+      - dev-uploads-xlsx:/vol/uploads/files
     ports:
       - "80:80"
+    env_file:
+      - .env
     depends_on:
       chrome:
         condition: service_healthy
+      db:
+        condition: service_started
     stdin_open: true
     tty: true
 
@@ -25,3 +30,20 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
+
+  db:
+    image: mysql:9
+    volumes:
+      - dev-db-data:/var/lib/mysql
+      - dev-uploads-xlsx:/vol/uploads/files
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+
+volumes:
+  dev-db-data:
+  dev-uploads-xlsx:

@@ -7,6 +7,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
 BOT_NAME = "foodbazaar"
 
 SPIDER_MODULES = ["foodbazaar.spiders"]
@@ -95,3 +97,8 @@ FEED_EXPORT_ENCODING = "utf-8"
 SELENIUM_DRIVER_NAME = 'chrome'
 SELENIUM_COMMAND_EXECUTOR = 'http://chrome:4444'
 SELENIUM_DRIVER_ARGUMENTS = ['-headless']
+
+MYSQL_HOST = os.environ.get('DB_HOST')
+MYSQL_USER = os.environ.get('DB_USER')
+MYSQL_PASSWORD = os.environ.get('DB_PASS')
+MYSQL_DATABASE = os.environ.get('DB_NAME')
