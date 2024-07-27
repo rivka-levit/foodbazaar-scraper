@@ -115,6 +115,9 @@ class AddToXlsxPipeline:
                     INSERT INTO {os.environ.get('DB_NAME')}.foodbazaar (filepath)
                     VALUES (%s)
                 """, (filepath,))
+
+        self.cursor.execute(f"SELECT id FROM {os.environ.get('DB_NAME')}.foodbazaar WHERE filepath = '/vol/uploads/files/{filename}'")
+        print(self.cursor.fetchall()[-1][0])
         self.cursor.close()
         self.conn.close()
 
