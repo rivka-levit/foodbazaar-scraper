@@ -13,5 +13,6 @@ EXPOSE 80
 RUN python -m pip install --upgrade pip && \
     pip install -r /tmp/requirements.txt && \
     cat middlewares.py > /usr/local/lib/python3.12/site-packages/scrapy_selenium/middlewares.py && \
-    mkdir -p /vol/uploads/files && \
     rm -rf /tmp
+
+RUN mkdir -p /vol/uploads/files

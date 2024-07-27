@@ -2,3 +2,5 @@ Scrapy>=2.11.2,<2.12
 scrapy-selenium>=0.0.7,<0.1
 openpyxl>=3.1.5,<3.2
 python-dotenv>=1.0.1,<1.1
+mysql>=0.0.3,<0.1
+mysql-connector-python>=9.0.0,<9.1

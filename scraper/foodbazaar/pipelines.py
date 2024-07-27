@@ -8,7 +8,15 @@ from scrapy.exceptions import DropItem
 
 from datetime import datetime as dt
 
+from dotenv import load_dotenv
+
 from foodbazaar.items import FoodbazaarItem
+
+import mysql.connector
+import os
+
+load_dotenv()
+
 
 
 class RemoveDuplicatesPipeline:
@@ -75,14 +83,40 @@ class AddToXlsxPipeline:
         self.worksheet.column_dimensions['B'].width = 30
         self.worksheet.column_dimensions['C'].width = 70
 
+        self.conn = mysql.connector.connect(
+            host=os.environ.get('DB_HOST'),
+            user='root',
+            password=os.environ.get('DB_ROOT_PASS'),
+            database=os.environ.get('DB_NAME')
+        )
+        self.cursor = self.conn.cursor()
+        # self.cursor.execute(
+        #     f"""CREATE DATABASE IF NOT EXISTS {self.database}"""
+        # )
+        self.cursor.execute(
+            f"""CREATE TABLE IF NOT EXISTS foodbazaar (
+                        id INT PRIMARY KEY AUTO_INCREMENT,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        filepath VARCHAR(255)
+                    )"""
+        )
+
     def close_spider(self, spider):
         max_row = self.worksheet.max_row
         letters = [f'A{max_row}', f'B{max_row}', f'C{max_row}']
 
         self.add_table_borders(letters)
 
-        excel_file = f'{str(dt.now().timestamp()).replace(".", "_")}_foodbazaar.xlsx'  # File xlsx name
-        self.workbook.save(excel_file)
+        filename = f'{str(dt.now().timestamp()).replace(".", "_")}_foodbazaar.xlsx'  # File xlsx name
+        filepath = '/vol/uploads/files/' + filename
+        self.workbook.save(filepath)
+
+        self.cursor.execute(f"""
+                    INSERT INTO {os.environ.get('DB_NAME')}.foodbazaar (filepath)
+                    VALUES (%s)
+                """, (filepath,))
+        self.cursor.close()
+        self.conn.close()
 
     def add_table_borders(self, letters: list[str]) -> None:
         """
