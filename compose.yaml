@@ -44,6 +44,23 @@ services:
       POSTGRES_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
 
+  cleaner:
+    build:
+      context: .
+      dockerfile: cleaner/Dockerfile
+    volumes:
+      - ./cleaner:/cleaner
+      - dev-uploads-xlsx:/vol/uploads/files
+    ports:
+      - "81:81"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_started
+    stdin_open: true
+    tty: true
+
 volumes:
   dev-db-data:
   dev-uploads-xlsx:
